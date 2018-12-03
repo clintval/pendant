@@ -1,0 +1,13 @@
+language: python
+python:
+  - 3.6
+before_install:
+  - sudo rm -f /etc/boto.cfg
+install:
+  - pip install codecov tox-travis
+script:
+  - tox
+after_success:
+  - codecov
+notifications:
+  email: false
