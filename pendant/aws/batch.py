@@ -7,10 +7,10 @@ import boto3
 
 from custom_inherit import DocInheritMeta
 
-from reticle.aws.exception import BatchJobSubmissionError
-from reticle.aws.logs import AwsLogUtil, LogEvent
-from reticle.aws.response import SubmitJobResponse
-from reticle.util import format_ISO8601
+from pendant.aws.exception import BatchJobSubmissionError
+from pendant.aws.logs import AwsLogUtil, LogEvent
+from pendant.aws.response import SubmitJobResponse
+from pendant.util import format_ISO8601
 
 __all__ = ['BatchJob', 'JobDefinition']
 

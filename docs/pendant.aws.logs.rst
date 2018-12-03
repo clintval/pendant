@@ -1,7 +1,7 @@
-reticle.aws.logs module
+pendant.aws.logs module
 =======================
 
-.. automodule:: reticle.aws.logs
+.. automodule:: pendant.aws.logs
     :members:
     :undoc-members:
     :show-inheritance:

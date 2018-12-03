@@ -1,9 +1,9 @@
-Welcome to the ``reticle`` Documentation!
+Welcome to the ``pendant`` Documentation!
 =========================================
 
 .. code-block:: bash
 
-    ❯ pip install reticle
+    ❯ pip install pendant
 
 Features
 --------
@@ -13,7 +13,7 @@ Features
 .. toctree::
    :maxdepth: 2
 
-   reticle
+   pendant
    CONTRIBUTING
 
 End-to-end Examples
@@ -24,14 +24,15 @@ Every Batch job definition has a name, parameters, and some form of optional par
 
 .. code-block:: python
 
-    from reticle.aws.batch import JobDefinition
-    from reticle.aws.s3 import S3Uri
+    from pendant.aws.batch import JobDefinition
+    from pendant.aws.s3 import S3Uri
+    from pendant.aws.exception import S3ObjectNotFoundError
 
     class DemoJobDefinition(JobDefinition):
         """A Batch job definition for demonstrating our API.
 
         Args:
-            input_object: The S3 URI to the input object.
+            input_object: The S3 URI for the input object.
 
         """
         def __init__(self, input_object: S3Uri):
@@ -45,13 +46,13 @@ Every Batch job definition has a name, parameters, and some form of optional par
         def validate(self) -> None:
             """Validate this parameterized job definition."""
             if not self.input_object.object_exists():
-                raise f'S3 object does not exist: {self.input_object}'
+                raise S3ObjectNotFoundError(f'S3 object does not exist: {self.input_object}')
 
 We can now wrap the parameterized job definition in a Batch job and set a specific revision.
 
 .. code-block:: python
 
-    from reticle.aws.batch import BatchJob
+    from pendant.aws.batch import BatchJob
 
     definition = DemoJobDefinition(input_object='s3://bucket/object')
     definition.at_revision('6')

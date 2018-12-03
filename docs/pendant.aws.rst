@@ -1,7 +1,7 @@
-reticle.aws module
+pendant.aws module
 ==================
 
-.. automodule:: reticle.aws
+.. automodule:: pendant.aws
     :members:
     :undoc-members:
     :show-inheritance:

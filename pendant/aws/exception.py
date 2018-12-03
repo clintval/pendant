@@ -13,7 +13,7 @@ class BatchJobNotFoundError(Exception):
 
 
 class BatchJobSubmissionError(Exception):
-    """A Batch job not found error."""
+    """A Batch job submission error."""
 
     pass
 

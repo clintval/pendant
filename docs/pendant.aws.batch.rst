@@ -1,7 +1,7 @@
-reticle.aws.batch module
+pendant.aws.batch module
 ========================
 
-.. automodule:: reticle.aws.batch
+.. automodule:: pendant.aws.batch
     :members:
     :undoc-members:
     :show-inheritance:

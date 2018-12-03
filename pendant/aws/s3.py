@@ -6,7 +6,7 @@ import boto3
 
 import botocore
 
-from reticle import aws
+from pendant import aws
 
 __all__ = ['S3Uri', 's3api_head_object', 's3api_object_exists', 's3_object_exists']
 

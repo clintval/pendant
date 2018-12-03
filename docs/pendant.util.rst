@@ -1,7 +1,7 @@
-reticle.util module
+pendant.util module
 ===================
 
-.. automodule:: reticle.util
+.. automodule:: pendant.util
     :members:
     :undoc-members:
     :show-inheritance:

@@ -3,8 +3,8 @@ import setuptools
 from pathlib import Path
 from setuptools import find_packages
 
-PACKAGE = 'reticle'
-VERSION = '0.1.0'
+PACKAGE = 'pendant'
+VERSION = '0.2.0'
 
 setuptools.setup(
     name=PACKAGE,
@@ -19,14 +19,7 @@ setuptools.setup(
     license='MIT',
     zip_safe=False,
     packages=[PACKAGE],
-    install_requires=[
-        'awscli',
-        'boto3',
-        'custom_inherit',
-        'logzero',
-        'sample_sheet',
-        'smart_open',
-    ],
+    install_requires=['awscli', 'boto3', 'custom_inherit'],
     keywords='AWS Batch job submission',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

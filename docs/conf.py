@@ -13,14 +13,14 @@ sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'reticle'
+project = 'pendant'
 copyright = '2018, Clint Valentine'
 author = 'clintval'
 
 # The short X.Y version
-version = '0.1'
+version = '0.2'
 # The full version, including alpha/beta/rc tags
-release = '0.1.0'
+release = '0.2.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -48,7 +48,10 @@ napoleon_use_rtype = False
 
 autodoc_member_order = 'bysource'
 
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {
+    'boto3': ('https://boto3.amazonaws.com/v1/documentation/api/latest', None),
+    'python': ('https://docs.python.org/3', None),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

@@ -5,7 +5,7 @@ import shlex
 
 from awscli.clidriver import create_clidriver
 
-from reticle.util import ExitCode
+from pendant.util import ExitCode
 
 __all__ = ['cli']
 

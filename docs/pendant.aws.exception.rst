@@ -1,7 +1,7 @@
-reticle.aws.exception module
+pendant.aws.exception module
 =============================
 
-.. automodule:: reticle.aws.exception
+.. automodule:: pendant.aws.exception
     :members:
     :undoc-members:
     :show-inheritance:

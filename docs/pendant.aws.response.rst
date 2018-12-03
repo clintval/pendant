@@ -1,7 +1,7 @@
-reticle.aws.response module
+pendant.aws.response module
 ===========================
 
-.. automodule:: reticle.aws.response
+.. automodule:: pendant.aws.response
     :members:
     :undoc-members:
     :show-inheritance:
