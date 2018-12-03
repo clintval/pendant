@@ -1,10 +1,10 @@
 import setuptools
-
-from pathlib import Path
 from setuptools import find_packages
 
+from pathlib import Path
+
 PACKAGE = 'pendant'
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 
 setuptools.setup(
     name=PACKAGE,
@@ -18,7 +18,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     license='MIT',
     zip_safe=False,
-    packages=[PACKAGE],
+    packages=find_packages(),
     install_requires=['awscli', 'boto3', 'custom_inherit'],
     keywords='AWS Batch job submission',
     classifiers=[
