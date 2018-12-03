@@ -8,7 +8,7 @@
 [![MyPy Checked](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-Analysis and plotting library for base substitution spectra and signatures.
+Python 3.6+ library for submitting to AWS Batch interactively.
 
 ```bash
 ❯ pip install reticle
