@@ -7,10 +7,10 @@ import boto3
 
 from custom_inherit import DocInheritMeta
 
-from lumen.aws.exception import BatchJobSubmissionError
-from lumen.aws.logs import AwsLogUtil, LogEvent
-from lumen.aws.response import SubmitJobResponse
-from lumen.util import format_ISO8601
+from reticle.aws.exception import BatchJobSubmissionError
+from reticle.aws.logs import AwsLogUtil, LogEvent
+from reticle.aws.response import SubmitJobResponse
+from reticle.util import format_ISO8601
 
 __all__ = ['BatchJob', 'JobDefinition']
 

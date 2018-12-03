@@ -4,7 +4,7 @@ Pull requests, feature requests, and issues welcome!
 The complete test suite is configured through `Tox`:
 
 ```bash
-❯ cd lumen
+❯ cd reticle
 ❯ pip install tox
 ❯ tox  # Run entire dynamic / static analysis test suite
 ```
@@ -13,7 +13,7 @@ List all environments with:
 
 ```
 ❯ tox -av
-using tox.ini: .../lumen/tox.ini
+using tox.ini: .../reticle/tox.ini
 using tox-3.1.2 from ../tox/__init__.py
 default environments:
 py36      -> run the test suite with (basepython)

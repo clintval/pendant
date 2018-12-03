@@ -5,7 +5,7 @@ import shlex
 
 from awscli.clidriver import create_clidriver
 
-from lumen.util import ExitCode
+from reticle.util import ExitCode
 
 __all__ = ['cli']
 

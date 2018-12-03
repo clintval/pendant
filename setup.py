@@ -3,7 +3,7 @@ import setuptools
 from pathlib import Path
 from setuptools import find_packages
 
-PACKAGE = 'lumen'
+PACKAGE = 'reticle'
 VERSION = '0.0.1'
 
 setuptools.setup(

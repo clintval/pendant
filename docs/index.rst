@@ -1,9 +1,9 @@
-Welcome to the ``lumen`` Documentation!
-=======================================
+Welcome to the ``reticle`` Documentation!
+=========================================
 
 .. code-block:: bash
 
-    ❯ pip install lumen
+    ❯ pip install reticle
 
 Features
 --------
@@ -13,5 +13,5 @@ Features
 .. toctree::
    :maxdepth: 2
 
-   lumen
+   reticle
    CONTRIBUTING
