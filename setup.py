@@ -4,7 +4,7 @@ from pathlib import Path
 from setuptools import find_packages
 
 PACKAGE = 'reticle'
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 
 setuptools.setup(
     name=PACKAGE,

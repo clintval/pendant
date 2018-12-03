@@ -14,6 +14,7 @@ from reticle.util import format_ISO8601
 
 __all__ = ['BatchJob', 'JobDefinition']
 
+CLOUDWATCH_LOG_GROUP = '/aws/batch/job'
 BATCH_STATUS_SUBMITTED = 'SUBMITTED'
 BATCH_STATUS_PENDING = 'PENDING'
 BATCH_STATUS_RUNNABLE = 'RUNNABLE'
@@ -77,7 +78,7 @@ class JobDefinition(
 
     def __repr__(self) -> str:
         parts = [f'{key}={repr(getattr(self, key))}' for key in self.parameters]
-        signature = ' '.join(parts)
+        signature = ', '.join(parts)
         return f'{self.__class__.__qualname__}({signature})'
 
 
@@ -230,11 +231,8 @@ class BatchJob(object):
         log_stream_name: str = job['container']['logStreamName']
         return log_stream_name
 
-    def log_stream_events(self, group_name: str) -> List[LogEvent]:
-        """Return all log events for this job withing a Log Group.
-
-        Args:
-            group_name: The Cloudwatch log group this job was redirected to.
+    def log_stream_events(self) -> List[LogEvent]:
+        """Return all log events for this job.
 
         Returns:
             events: All log events, to date.
@@ -242,7 +240,9 @@ class BatchJob(object):
         """
         log_util = AwsLogUtil()
         log_stream_name = self.log_stream_name()
-        events = log_util.get_log_events(group_name=group_name, stream_name=log_stream_name)
+        events = log_util.get_log_events(
+            group_name=CLOUDWATCH_LOG_GROUP, stream_name=log_stream_name
+        )
         return events
 
     def yield_log_stream_events(self, group_name: str) -> Generator[LogEvent, None, None]:
