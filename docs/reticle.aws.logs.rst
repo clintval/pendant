@@ -1,7 +1,7 @@
-lumen.aws.logs module
-=====================
+reticle.aws.logs module
+=======================
 
-.. automodule:: lumen.aws.logs
+.. automodule:: reticle.aws.logs
     :members:
     :undoc-members:
     :show-inheritance:

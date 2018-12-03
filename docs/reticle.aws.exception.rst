@@ -1,7 +1,7 @@
-lumen.aws.exception module
-==========================
+reticle.aws.exception module
+=============================
 
-.. automodule:: lumen.aws.exception
+.. automodule:: reticle.aws.exception
     :members:
     :undoc-members:
     :show-inheritance:

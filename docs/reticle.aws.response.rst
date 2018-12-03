@@ -1,7 +1,7 @@
-lumen.aws.response module
-=========================
+reticle.aws.response module
+===========================
 
-.. automodule:: lumen.aws.response
+.. automodule:: reticle.aws.response
     :members:
     :undoc-members:
     :show-inheritance:

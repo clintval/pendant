@@ -1,21 +1,21 @@
-lumen package
-=============
+reticle package
+===============
 
 ``aws`` Submodule
 -----------------
 
 .. toctree::
 
-    lumen.aws
-    lumen.aws.batch
-    lumen.aws.exception
-    lumen.aws.logs
-    lumen.aws.response
-    lumen.aws.s3
+    reticle.aws
+    reticle.aws.batch
+    reticle.aws.exception
+    reticle.aws.logs
+    reticle.aws.response
+    reticle.aws.s3
 
 ``util`` Submodule
 ------------------
 
 .. toctree::
 
-   lumen.util
+   reticle.util

@@ -1,7 +1,7 @@
-lumen.util module
-=================
+reticle.util module
+===================
 
-.. automodule:: lumen.util
+.. automodule:: reticle.util
     :members:
     :undoc-members:
     :show-inheritance:

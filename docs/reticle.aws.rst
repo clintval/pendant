@@ -1,7 +1,7 @@
-lumen.aws module
-================
+reticle.aws module
+==================
 
-.. automodule:: lumen.aws
+.. automodule:: reticle.aws
     :members:
     :undoc-members:
     :show-inheritance:

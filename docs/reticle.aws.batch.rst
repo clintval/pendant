@@ -1,7 +1,7 @@
-lumen.aws.batch module
-======================
+reticle.aws.batch module
+========================
 
-.. automodule:: lumen.aws.batch
+.. automodule:: reticle.aws.batch
     :members:
     :undoc-members:
     :show-inheritance:
