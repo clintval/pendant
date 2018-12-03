@@ -29,7 +29,7 @@ Every Batch job definition has a name, parameters, and some form of optional par
 ```python
 from pendant.aws.batch import JobDefinition
 from pendant.aws.s3 import S3Uri
-from pendand.aws.exception import S3ObjectNotFoundError
+from pendant.aws.exception import S3ObjectNotFoundError
 
 class DemoJobDefinition(JobDefinition):
     """A Batch job definition for demonstrating our API.
