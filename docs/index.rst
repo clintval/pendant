@@ -28,23 +28,15 @@ Every Batch job definition has a name, parameters, and some form of optional par
     from pendant.aws.s3 import S3Uri
     from pendant.aws.exception import S3ObjectNotFoundError
 
-    class DemoJobDefinition(JobDefinition):
-        """A Batch job definition for demonstrating our API.
-
-        Args:
-            input_object: The S3 URI for the input object.
-
-        """
+    class DemoJobDefinition(JobDefinition) -> None:
         def __init__(self, input_object: S3Uri):
             self.input_object = input_object
 
         @property
         def name(self) -> str:
-            """Return the job definition name."""
             return 'demo-job'
 
         def validate(self) -> None:
-            """Validate this parameterized job definition."""
             if not self.input_object.object_exists():
                 raise S3ObjectNotFoundError(f'S3 object does not exist: {self.input_object}')
 
