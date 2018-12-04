@@ -24,7 +24,7 @@ class S3Uri(object):
         >>> uri.bucket
         'mybucket'
         >>> uri / 'myobject'
-        S3Uri("s3://mybucket/prefix/myobject")
+        S3Uri('s3://mybucket/prefix/myobject')
 
     """
 
@@ -32,7 +32,7 @@ class S3Uri(object):
 
     _pattern_validate = re.compile(r'^s3://.*')
     _pattern_scheme = re.compile(r'^(s3://).*')
-    _pattern_key = re.compile(r'^s3://[^/]*/(.*)')
+    _pattern_key = re.compile(r'^s3://[^/]+/([^/]*)$')
     _pattern_bucket = re.compile(r'^s3://([^/]*)')
 
     def __init__(self, path: Union[str, 'S3Uri']) -> None:
@@ -50,13 +50,19 @@ class S3Uri(object):
         """Join this URI with another part using the `/` operator."""
         if not isinstance(other, str):
             return NotImplemented
-        return S3Uri(self.delimiter.join([self.path, other]))
+        if self.path.endswith(self.delimiter):
+            return S3Uri(self.path + other)
+        else:
+            return S3Uri(self.delimiter.join([self.path, other]))
 
     def __truediv__(self, other: str) -> 'S3Uri':
         """Join this URI with another part using the `/` operator."""
         if not isinstance(other, str):
             return NotImplemented
-        return S3Uri(self.delimiter.join([self.path, other]))
+        if self.path.endswith(self.delimiter):
+            return S3Uri(self.path + other)
+        else:
+            return S3Uri(self.delimiter.join([self.path, other]))
 
     @property
     def scheme(self) -> str:
@@ -105,12 +111,12 @@ class S3Uri(object):
         Examples:
             >>> uri = S3Uri('s3://mybucket/myobject.bam')
             >>> uri.add_suffix('.bai')
-            S3Uri("s3://mybucket/myobject.bam.bai")
+            S3Uri('s3://mybucket/myobject.bam.bai')
 
             This is equivalent to:
 
             >>> S3Uri('s3://mybucket/myobject.bam') + '.bai'
-            S3Uri("s3://mybucket/myobject.bam.bai")
+            S3Uri('s3://mybucket/myobject.bam.bai')
 
         """
         return self + suffix
@@ -119,16 +125,11 @@ class S3Uri(object):
         """Test if this URI references an object that exists."""
         return s3_object_exists(self.bucket, self.key)
 
-    def prefix_exists(self) -> bool:
-        """Test if the URI prefix exists within the bucket."""
-        # TODO: implement!
-        return True
-
     def __str__(self) -> str:
         return self.path
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__qualname__}("{self.path}")'
+        return f'{self.__class__.__qualname__}({repr(self.path)})'
 
 
 def s3api_head_object(bucket: str, key: str, profile: str = 'default') -> Dict:

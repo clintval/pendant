@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, Optional
 
 __all__ = ['AwsResponse', 'SubmitJobResponse']
 
@@ -13,13 +13,10 @@ class SubmitJobResponse(AwsResponse):
     """A Batch submit-job response."""
 
     def __init__(self, response: Mapping) -> None:
-        self._response = response
-        if not response:
-            return None
-
-        self.metadata = response['ResponseMetadata']
-        self.job_name = response['jobName']
-        self.job_id = response['jobId']
+        self._response: Mapping = response
+        self.metadata: Mapping = response.get('ResponseMetadata', {})
+        self.job_name: Optional[str] = response.get('jobName', None)
+        self.job_id: Optional[str] = response.get('jobId', None)
 
     def is_ok(self) -> bool:
         """Return if response was successful."""
@@ -27,5 +24,5 @@ class SubmitJobResponse(AwsResponse):
 
     def http_code(self) -> int:
         """Return the HTTP status code of this response."""
-        http_code: int = self.metadata['HTTPStatusCode']
+        http_code: int = self.metadata.get('HTTPStatusCode', 500)
         return http_code

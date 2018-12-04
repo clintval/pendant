@@ -4,6 +4,9 @@
 # VS Code project files
 .vscode/
 
+# MacOS files
+.DS_Store
+
 # Concatenated from the following sources on 2018-05-08:
 #
 #   Lang.    URI

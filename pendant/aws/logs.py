@@ -1,4 +1,4 @@
-from typing import List, Mapping, Optional
+from typing import List, Mapping
 
 import boto3
 
@@ -19,14 +19,11 @@ class LogEvent(object):
         self.ingestion_time = record.get('ingestionTime')
 
     def __repr__(self) -> str:
-        def optional_print(string: Optional[str]) -> str:
-            return "None" if string is None else f'"{string}"'
-
         return (
             f'{self.__class__.__qualname__}('
-            f'timestamp={optional_print(self.timestamp)}, '
-            f'message={optional_print(self.message)}, '
-            f'ingestion_time={optional_print(self.ingestion_time)})'
+            f'timestamp={repr(self.timestamp)}, '
+            f'message={repr(self.message)}, '
+            f'ingestion_time={repr(self.ingestion_time)})'
         )
 
 

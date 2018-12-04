@@ -19,6 +19,7 @@ def test_exit_code(integer):
     assert exit_code == ExitCode(integer)
     assert repr(exit_code) == f'ExitCode({integer})'
 
+
 @given(datetimes())
 def test_format_ISO8601(date):
     expected = date.replace(microsecond=0)

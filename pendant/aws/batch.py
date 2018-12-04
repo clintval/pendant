@@ -1,7 +1,7 @@
 import inspect
 from abc import abstractmethod
 from datetime import datetime
-from typing import Dict, Generator, List, Mapping, Optional, Tuple
+from typing import Dict, List, Mapping, Optional, Tuple
 
 import boto3
 
@@ -32,7 +32,6 @@ class JobDefinition(
     def __new__(cls, *args: str, **kwargs: str) -> 'JobDefinition':
         """Create a new Batch job definition."""
         this: JobDefinition = super().__new__(cls)
-        this._name = kwargs.pop('name', '')  # type: ignore
         this._revision = '0'
         return this
 
@@ -40,8 +39,6 @@ class JobDefinition(
     @abstractmethod
     def name(self) -> str:
         """Return the name of the job definition."""
-        name: str = self._name  # type: ignore # pylint: disable=E1101
-        return name
 
     @property
     def parameters(self) -> Tuple[str]:
@@ -56,7 +53,6 @@ class JobDefinition(
     @abstractmethod
     def validate(self) -> None:
         """Validate this job definition after initialization."""
-        return None
 
     def at_revision(self, revision: str) -> 'JobDefinition':
         """Set this job definition to a specific revision."""
@@ -244,17 +240,6 @@ class BatchJob(object):
             group_name=CLOUDWATCH_LOG_GROUP, stream_name=log_stream_name
         )
         return events
-
-    def yield_log_stream_events(self, group_name: str) -> Generator[LogEvent, None, None]:
-        """Yield all log events in a stream as this job is in a RUNNING state.
-
-        Args:
-            group_name: The log group name this job was scheduled under.
-
-        """
-        while self.is_running():
-            pass
-        yield LogEvent({})
 
     def __repr__(self) -> str:
         return f'{self.__class__.__qualname__}(' f'definition={repr(self.definition)})'
