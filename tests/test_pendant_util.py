@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from hypothesis import example, given
 from hypothesis.strategies import integers, datetimes
@@ -18,10 +18,3 @@ def test_exit_code(integer):
 
     assert exit_code == ExitCode(integer)
     assert repr(exit_code) == f'ExitCode({integer})'
-
-
-@given(datetimes())
-def test_format_ISO8601(date):
-    expected = date.replace(microsecond=0)
-    actual = datetime.strptime(format_ISO8601(date), '%Y-%m-%dT%H-%M-%S')
-    assert expected == actual
