@@ -24,7 +24,7 @@ class LogStreamNotFoundError(Exception):
     pass
 
 
-class S3ObjectNotFoundError(FileNotFoundError):
+class S3ObjectNotFoundError(Exception):
     """A file not found error for objects on S3."""
 
     pass
