@@ -18,14 +18,6 @@ class ExitCode(int):
         cls._code = exit_code
         return super().__new__(cls, exit_code)  # type: ignore
 
-    def __add__(self, other: int) -> 'ExitCode':
-        """Add an integer to this :class:`ExitCode`."""
-        return ExitCode(self.__class__(super().__sub__(other)))
-
-    def __sub__(self, other: int) -> 'ExitCode':
-        """Subtract an integer from this :class:`ExitCode`."""
-        return ExitCode(self.__class__(super().__sub__(other)))
-
     def is_ok(self) -> bool:
         """Is this code zero."""
         return self._code == 0

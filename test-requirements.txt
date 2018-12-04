@@ -10,6 +10,7 @@ flake8-import-order
 flake8-logging-format
 flake8-rst-docstrings
 hypothesis
+moto
 mypy
 pylint
 pytest
