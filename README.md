@@ -72,15 +72,18 @@ When the job is in a `RUNNING` state we can access the job's Cloudwatch logs.
 The log events are returned as objects which have useful properties such as `timestamp` and `message`.
 
 ```python
->>> for log_event in job.log_stream_events():
-...     print(log_event)
+>>> from pendant.util import until
+
+>>> with until(job.is_running):
+...     for event in job.yield_log_events():
+...         print(event)
 LogEvent(timestamp="1543809952329", message="You have started up this demo job", ingestion_time="1543809957080")
 LogEvent(timestamp="1543809955437", message="Configuration, we are loading from...", ingestion_time="1543809957080")
 LogEvent(timestamp="1543809955437", message="Defaulting to approximate values", ingestion_time="1543809957080")
 LogEvent(timestamp="1543809955437", message="Setting up logger, nothing to see here", ingestion_time="1543809957080")
 ```
 
-And if we must, we can cancel the job as long as we provide a reason:
+And if we must, we can terminate the job as long as we provide a reason:
 
 ```python
 >>> response = job.terminate(reason='I was just testing!')

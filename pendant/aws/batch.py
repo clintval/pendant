@@ -1,7 +1,7 @@
 import inspect
 from abc import abstractmethod
 from datetime import datetime
-from typing import Dict, List, Mapping, Optional, Tuple
+from typing import Dict, Generator, List, Mapping, Optional, Tuple
 
 import boto3
 
@@ -9,10 +9,10 @@ from custom_inherit import DocInheritMeta
 
 from pendant.aws.exception import BatchJobSubmissionError
 from pendant.aws.logs import AwsLogUtil, LogEvent
-from pendant.aws.response import SubmitJobResponse
+from pendant.aws.response import AwsResponse
 from pendant.util import format_ISO8601
 
-__all__ = ['BatchJob', 'JobDefinition']
+__all__ = ['BatchJob', 'JobDefinition', 'SubmitJobResponse']
 
 CLOUDWATCH_LOG_GROUP = '/aws/batch/job'
 BATCH_STATUS_SUBMITTED = 'SUBMITTED'
@@ -22,6 +22,15 @@ BATCH_STATUS_STARTING = 'STARTING'
 BATCH_STATUS_RUNNING = 'RUNNING'
 BATCH_STATUS_FAILED = 'FAILED'
 BATCH_STATUS_NOTFOUND = 'NOTFOUND'
+
+
+class SubmitJobResponse(AwsResponse):
+    """A Batch submit-job response."""
+
+    def __init__(self, response: Mapping) -> None:
+        super().__init__(response)
+        self.job_name: Optional[str] = response.get('jobName', None)
+        self.job_id: Optional[str] = response.get('jobId', None)
 
 
 class JobDefinition(
@@ -217,14 +226,14 @@ class BatchJob(object):
             raise BatchJobSubmissionError(f'Batch job failed to submit!\n{response}')
         return submit_response
 
-    def log_stream_name(self) -> str:
+    def log_stream_name(self) -> Optional[str]:
         """Return the Batch log stream name for this job."""
         if self.job_id is None:
             raise BatchJobSubmissionError(
                 'Cannot check status of a job that has not been submitted.'
             )
         job = BatchJob.describe_job(self.job_id)
-        log_stream_name: str = job['container']['logStreamName']
+        log_stream_name: Optional[str] = job['container'].get('logStreamName')
         return log_stream_name
 
     def log_stream_events(self) -> List[LogEvent]:
@@ -240,6 +249,20 @@ class BatchJob(object):
             group_name=CLOUDWATCH_LOG_GROUP, stream_name=log_stream_name
         )
         return events
+
+    def yield_log_events(
+        self, start_time: int = 0, timeout: Optional[int] = None
+    ) -> Generator[LogEvent, None, None]:
+        """Yield all log events for this job while it is running."""
+        log_util = AwsLogUtil()
+        log_stream_name = self.log_stream_name()
+        for event in log_util.yield_log_events(
+            group_name=CLOUDWATCH_LOG_GROUP,
+            stream_name=log_stream_name,
+            start_time=start_time,
+            timeout=timeout,
+        ):
+            yield event
 
     def __repr__(self) -> str:
         return f'{self.__class__.__qualname__}(' f'definition={repr(self.definition)})'

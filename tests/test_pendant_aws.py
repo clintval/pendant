@@ -9,10 +9,9 @@ import pytest
 from hypothesis import example, given
 from hypothesis.strategies import integers, datetimes
 
-from pendant.aws.batch import BatchJob, JobDefinition
+from pendant.aws.batch import BatchJob, JobDefinition, SubmitJobResponse
 from pendant.aws.exception import BatchJobSubmissionError, S3ObjectNotFoundError
 from pendant.aws.logs import AwsLogUtil, LogEvent
-from pendant.aws.response import SubmitJobResponse
 from pendant.aws.s3 import S3Uri
 from pendant.aws.s3 import s3api_head_object, s3api_object_exists, s3_object_exists
 from pendant.util import format_ISO8601
