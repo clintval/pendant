@@ -2,15 +2,16 @@ import io
 import os
 import sys
 import shlex
+from typing import Tuple
 
 from awscli.clidriver import create_clidriver
 
 from pendant.util import ExitCode
 
-__all__ = ['cli']
+__all__ = ['awscli']
 
 
-def cli(command: str) -> str:
+def awscli(command: str) -> Tuple[str, str]:
     """Use the ``awscli`` to execute a command.
 
     This function will call the ``awscli`` within the same process and not
@@ -21,11 +22,15 @@ def cli(command: str) -> str:
         command: The command to be executed by the ``awscli``.
 
     Examples:
-        >>> # cli('--version')
+        >>> stdout, stderr = awscli('configure get region')
+        >>> print(stdout.strip())
+        us-west-2
 
     """
     cli_args = shlex.split(command)
     current_environment = dict(os.environ)
+    stdout: str = ''
+    stderr: str = ''
     current_stdout = sys.stdout
     current_stderr = sys.stderr
     try:
@@ -39,14 +44,14 @@ def cli(command: str) -> str:
         driver = create_clidriver()
         exit_code = ExitCode(driver.main(cli_args))
 
-        if not exit_code.is_ok():
-            raise RuntimeError(f'AWS CLI exited with code {exit_code}')
-
         stdout = sys.stdout.getvalue()
-        sys.stderr.getvalue()
+        stderr = sys.stderr.getvalue()
+
+        if not exit_code.is_ok():
+            raise RuntimeError(f'AWS CLI exited with code {exit_code}\n{stdout}\n{stderr}')
     finally:
         sys.stdout = current_stdout
         sys.stderr = current_stderr
         os.environ.clear()
         os.environ.update(current_environment)
-    return stdout
+    return stdout, stderr

@@ -6,7 +6,7 @@ import boto3
 
 import botocore
 
-from pendant import aws
+from pendant.aws import awscli
 
 __all__ = ['S3Uri', 's3api_head_object', 's3api_object_exists', 's3_object_exists']
 
@@ -144,7 +144,7 @@ def s3api_head_object(bucket: str, key: str, profile: str = 'default') -> Dict:
         A dictionary of object metadata, if the object exists.
 
     """
-    stdout: str = aws.cli(f'--profile {profile} s3api head-object --bucket {bucket} --key {key}')
+    stdout, _ = awscli(f'--profile {profile} s3api head-object --bucket {bucket} --key {key}')
     metadata: Dict = literal_eval(stdout)
     return metadata
 

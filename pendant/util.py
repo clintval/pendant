@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 from typing import Any, Callable, Optional, Type
 
-__all__ = ['ExitCode', 'timeout_after', 'format_ISO8601']
+__all__ = ['ExitCode', 'timeout_after', 'wait_until', 'format_ISO8601']
 
 
 class ExitCode(int):
@@ -41,6 +41,20 @@ class timeout_after(object):
     Raises:
         TimeoutError: When work is not completed within a certain amount of time.
 
+    Examples:
+        >>> import time
+        >>> with timeout_after(1):
+        ...     time.sleep(0.5)
+        ...     print(repr('yes!'))
+        'yes!'
+
+        >>> with timeout_after(1, 'I took too long!'):
+        ...     time.sleep(2)
+        ...     print(repr('no!'))
+        Traceback (most recent call last):
+            ...
+        TimeoutError: I took too long!
+
     """
 
     def __init__(
@@ -65,24 +79,38 @@ class timeout_after(object):
             signal.alarm(0)
 
 
-class until(object):
-    """Wait until an callable evaluates to a truthy statement, then continue.
+class wait_until(object):
+    """Wait until a callable evaluates to a truthy statement, then continue.
+    
+    This object can be used as a function or as a context manager.
 
     Args:
         callable: A function which should eventually return a truthy value.
         call_rate: The rate at which to test the callable, optional.
+
+    Examples:
+        >>> iterable = [False, True, True, False, False]
+        >>> with wait_until(iterable.pop):
+        ...     print(iterable)
+        [False, True]
+        
+        >>> # Trivial example of waiting a quarter of a second
+        >>> wait_until(lambda: time.sleep(0.25) or 1)
+        >>> print(repr('done!'))
+        'done!'        
 
     """
 
     def __init__(self, statement: Callable, call_rate: Optional[int] = None) -> None:
         self.statement = statement
         self.call_rate = call_rate
-
-    def __enter__(self) -> None:
-        """Do not unblock until the statement becomes truthy."""
         while not self.statement():
             if self.call_rate is not None:
                 time.sleep(self.call_rate)
+
+    def __enter__(self) -> None:
+        """Do nothing on enter."""
+        pass
 
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None:
         """Do nothing on exit."""

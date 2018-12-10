@@ -10,18 +10,32 @@ from custom_inherit import DocInheritMeta
 from pendant.aws.exception import BatchJobSubmissionError
 from pendant.aws.logs import AwsLogUtil, LogEvent
 from pendant.aws.response import AwsResponse
-from pendant.util import format_ISO8601
+from pendant.util import format_ISO8601, wait_until
 
 __all__ = ['BatchJob', 'JobDefinition', 'SubmitJobResponse']
 
 CLOUDWATCH_LOG_GROUP = '/aws/batch/job'
-BATCH_STATUS_SUBMITTED = 'SUBMITTED'
+
+# https://docs.aws.amazon.com/batch/latest/userguide/job_states.html
+BATCH_STATUS_FAILED = 'FAILED'
 BATCH_STATUS_PENDING = 'PENDING'
 BATCH_STATUS_RUNNABLE = 'RUNNABLE'
-BATCH_STATUS_STARTING = 'STARTING'
 BATCH_STATUS_RUNNING = 'RUNNING'
-BATCH_STATUS_FAILED = 'FAILED'
+BATCH_STATUS_STARTING = 'STARTING'
+BATCH_STATUS_SUBMITTED = 'SUBMITTED'
+BATCH_STATUS_SUCCEEDED = 'SUCCEEDED'
+
+# An unofficial job state for when this library cannot find the job in AWS Batch.
 BATCH_STATUS_NOTFOUND = 'NOTFOUND'
+
+BATCH_STATUS_PRE_RUNNING = [
+    BATCH_STATUS_SUBMITTED,
+    BATCH_STATUS_PENDING,
+    BATCH_STATUS_RUNNABLE,
+    BATCH_STATUS_STARTING,
+]
+
+BATCH_STATUS_POST_RUNNING = [BATCH_STATUS_FAILED, BATCH_STATUS_SUCCEEDED]
 
 
 class SubmitJobResponse(AwsResponse):
@@ -254,15 +268,17 @@ class BatchJob(object):
         self, start_time: int = 0, timeout: Optional[int] = None
     ) -> Generator[LogEvent, None, None]:
         """Yield all log events for this job while it is running."""
-        log_util = AwsLogUtil()
-        log_stream_name = self.log_stream_name()
-        for event in log_util.yield_log_events(
-            group_name=CLOUDWATCH_LOG_GROUP,
-            stream_name=log_stream_name,
-            start_time=start_time,
-            timeout=timeout,
-        ):
-            yield event
+        assert not self.is_submitted(), 'Cannot fetch logs of an un-submitted jobs!'
+        with wait_until(self.is_running):
+            log_util = AwsLogUtil()
+            log_stream_name = self.log_stream_name()
+            for event in log_util.yield_log_events(
+                group_name=CLOUDWATCH_LOG_GROUP,
+                stream_name=log_stream_name,
+                start_time=start_time,
+                timeout=timeout,
+            ):
+                yield event
 
     def __repr__(self) -> str:
         return f'{self.__class__.__qualname__}(' f'definition={repr(self.definition)})'
