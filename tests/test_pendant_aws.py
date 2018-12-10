@@ -256,10 +256,15 @@ def test_aws_s3_s3uri_bucket():
 
 def test_aws_s3_s3uri_key():
     assert TEST_KEY_NAME == S3Uri(f's3://{TEST_BUCKET_NAME}/{TEST_KEY_NAME}').key
-    assert '' == S3Uri(f's3://{TEST_BUCKET_NAME}/{TEST_KEY_NAME}/').key
+    assert f'{TEST_KEY_NAME}/' == S3Uri(f's3://{TEST_BUCKET_NAME}/{TEST_KEY_NAME}/').key
     assert '' == S3Uri(f's3://{TEST_BUCKET_NAME}').key
     assert '' == S3Uri(f's3://{TEST_BUCKET_NAME}/').key
     assert '' == S3Uri(f's3://').key
+
+    key = 'mykey/with/many/delimiters'
+    assert key == S3Uri(f's3://{TEST_BUCKET_NAME}/{key}').key
+    key = 'mykey/with/many/delimiters/'
+    assert key == S3Uri(f's3://{TEST_BUCKET_NAME}/{key}').key
 
 
 def test_aws_s3_s3uri_str():

@@ -32,7 +32,7 @@ class S3Uri(object):
 
     _pattern_validate = re.compile(r'^s3://.*')
     _pattern_scheme = re.compile(r'^(s3://).*')
-    _pattern_key = re.compile(r'^s3://[^/]+/([^/]*)$')
+    _pattern_key = re.compile(r'^s3://[^/\n]+/?(.*)?')
     _pattern_bucket = re.compile(r'^s3://([^/]*)')
 
     def __init__(self, path: Union[str, 'S3Uri']) -> None:
